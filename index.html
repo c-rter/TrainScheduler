@@ -17,9 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
   <script>
-
     var timeFormat = "HH:mm";
-
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyDbA8p_xX0QWCwoFwh5iB4Q1Pe8sUHSpqs",
@@ -30,18 +28,14 @@
     messagingSenderId: "93403669483"
   };
   firebase.initializeApp(config);
-
     var database = firebase.database();
   
     var name = "";
     var role = "";
     var date = "";
     var rate = "";
-
     var testRow;
-
     var p1, p2, p3, p4;
-
 </script>
 
 
@@ -59,17 +53,11 @@
 
 
   <style>
-
     .jumbotron {
-
       text-align:center;
-
       background-color:black;
-
       color:white;
-
     }
-
     </style>
 
 
@@ -177,131 +165,102 @@
     </div>
 
 <script>   
-
         $("#yoyoyo").on("click", function(event) {
-
           event.preventDefault();
-
     
-
  
-
           name = $(".name-input").val().trim();
-
           role = $(".role-input").val().trim();
-
           date = $(".date-input").val().trim();
-
           rate = $(".rate-input").val().trim();
-
-
-
          database.ref().push({
-
          name: name,
-
          role: role,
-
          date: date,
-
          rate: rate
-
          });
-
     
-
         });
-
-
-
     database.ref().on("child_added", function(childSnapshot) {
-
-
-
 name1 = childSnapshot.val().name
-
 role1 = childSnapshot.val().role
-
 date1 = childSnapshot.val().date
-
 rate1 = childSnapshot.val().rate
 
+// Current Time (minutes) - First Time (minutes) = Elapsed
+// Elapsed / Frequency = Intervals Passed
+// Intervals Passed Rounded Down
+// Next Train = (Intervals Passed + 1) x Frequency
+// Minutes Away = Next Train - Current Time
 
+
+// Current Time (minutes) - First Time (minutes) = Elapsed
+
+var firstTime = date1;
+var frequency = rate1;
+var firstTimeMoment = moment(firstTime, "HH:mm");
+var firstTimeMinutes = moment(firstTimeMoment).format("mm");
+var firstTimeHours = moment(firstTimeMoment).format("HH");
+var firstTimeHoursInMinutes = firstTimeHours * 60;
+var firstTimeInMinutes = parseInt(firstTimeHoursInMinutes) + parseInt(firstTimeMinutes)
+var currentMinutes = moment().format("mm");
+var currentHours = moment().format("HH");
+var currentHoursInMinutes = currentHours * 60;
+var currentTimeInMinutes = parseInt(currentHoursInMinutes) + parseInt(currentMinutes);
+var elapsed = currentTimeInMinutes - firstTimeInMinutes
+
+// Elapsed / Frequency = Intervals Passed
+// Intervals Passed Rounded Down
+// Next Train = (Intervals Passed + 1) x Frequency
+var intervalsPassed = elapsed / frequency;
+var nextTrain = Math.ceil(intervalsPassed) * frequency;
+var nextTrain = nextTrain + firstTimeInMinutes;
+var nextTrainTime = moment.utc().startOf('day').add(nextTrain, 'minutes').format('hh:mm');
+
+// Minutes Away = Next Train - Current Time
+
+var now = moment();
+var midnight = now.clone().startOf('day');
+var currentMinutes = now.diff(midnight, 'minutes');
+var timeRemaining = nextTrain - currentMinutes;
 
 
     $("#testTable").find('tbody')
-
     .append($('<tr>')
-
         .append($('<td>')
-
             .append($('<p>')
-
                 .text(name1)
-
             )
-
         )
-
         .append($('<td>')
-
             .append($('<p>')
-
                 .text(role1)
-
             )
-
         )
-
         .append($('<td>')
-
             .append($('<p>')
-
                 .text(date1)
-
             )
-
         )
-
         .append($('<td>')
-
             .append($('<p>')
-
                 .text(rate1)
-
             )
-
         )
-
         .append($('<td>')
-
             .append($('<p>')
-
-                .text(role1)
-
+                .text(nextTrainTime)
             )
-
         )
-
         .append($('<td>')
-
             .append($('<p>')
-
-                .text(role1)
-
+                .text(timeRemaining)
             )
-
         )
-
     );
-
-
 }, function(errorObject) {
-
 console.log("Errors handled: " + errorObject.code);
-
 });
-
         </script>
 </body>
 </html>
