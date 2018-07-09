@@ -20,23 +20,17 @@
 
     var timeFormat = "HH:mm";
 
-    var config = {
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDbA8p_xX0QWCwoFwh5iB4Q1Pe8sUHSpqs",
+    authDomain: "trainscheduler-3a7ce.firebaseapp.com",
+    databaseURL: "https://trainscheduler-3a7ce.firebaseio.com",
+    projectId: "trainscheduler-3a7ce",
+    storageBucket: "",
+    messagingSenderId: "93403669483"
+  };
+  firebase.initializeApp(config);
 
-      apiKey: "AIzaSyBES4to0TG08fXMxPZoePQK6yhe3QdSU78",
-
-      authDomain: "june27project.firebaseapp.com",
-
-      databaseURL: "https://june27project.firebaseio.com",
-
-      projectId: "june27project",
-
-      storageBucket: "",
-
-      messagingSenderId: "72372792704"
-
-    };
-
-    firebase.initializeApp(config);
     var database = firebase.database();
   
     var name = "";
