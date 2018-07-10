@@ -215,7 +215,7 @@ var elapsed = currentTimeInMinutes - firstTimeInMinutes
 var intervalsPassed = elapsed / frequency;
 var nextTrain = Math.ceil(intervalsPassed) * frequency;
 var nextTrain = nextTrain + firstTimeInMinutes;
-var nextTrainTime = moment.utc().startOf('day').add(nextTrain, 'minutes').format('hh:mm');
+var nextTrainTime = moment.utc().startOf('day').add(nextTrain, 'minutes').format('HH:mm');
 
 // Minutes Away = Next Train - Current Time
 
